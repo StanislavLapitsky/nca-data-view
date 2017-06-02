@@ -25,6 +25,7 @@ class ApplicationTests {
     lateinit var restTemplate: TestRestTemplate
 
     @Test
+    @Ignore
     fun findFuture() {
         val res = restTemplate.getForEntity("/nca-data?" +
                 "startDate=2050.01.01" +
@@ -50,6 +51,7 @@ class ApplicationTests {
     }
 
     @Test
+    @Ignore
     fun findMonth() {
         val res = restTemplate.getForEntity("/nca-month-data?" +
                     "year=2016" +
