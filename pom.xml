@@ -62,7 +62,7 @@
 				<version>2.5</version>
 				<configuration>
 					<forkMode>once</forkMode>
-					<argLine>-Xms512m -Xmx768m</argLine>
+					<argLine>-Xms256m -Xmx256m</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
