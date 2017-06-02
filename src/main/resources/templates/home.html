@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Данные по сделкам НКА с июля 2016 по май 2017</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="../../css/main.css" />
+</head>
+<body>
+<div class="container">
+    <div class="starter-template">
+        <h3>Данные по сделкам НКА с июля 2016 по май 2017</h3>
+        <select name="year" id="year">
+            <option value="2016" selected="true">2016</option>
+            <option value="2017">2017</option>
+        </select>
+        <select name="month" id="month">
+            <option value="1">Янв</option>
+            <option value="2">Фев</option>
+            <option value="3">Мар</option>
+            <option value="4">Апр</option>
+            <option value="5">Май</option>
+            <option value="6">Июн</option>
+            <option value="7" selected="true">Июл</option>
+            <option value="8">Авг</option>
+            <option value="9">Сен</option>
+            <option value="10">Окт</option>
+            <option value="11">Ноя</option>
+            <option value="12">Дек</option>
+        </select>
+        <a src="#" id="refreshChart">Пересчитать</a>
+    </div>
+    <div id="chart_div"></div>
+</div>
+<!-- /.container -->
+
+<script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+google.charts.load('current', {packages: ['corechart', 'bar']});
+google.charts.setOnLoadCallback(drawBasic);
+      var chart = {};
+      var options = {};
+      var amp
+
+function refreshChart() {
+      var yearSelect = $("#year").val();
+      var monthSelect = $("#month").val();
+      var jsonData = $.ajax({
+          url: 'nca-month-data',
+          dataType: "json",
+          data: { year: yearSelect, month: monthSelect},
+          method:'post',
+          async: false,
+          }).responseText;
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Диапазон цены');
+      data.addColumn('number', 'Количество');
+
+      data.addRows(eval(jsonData));
+      chart.draw(data, options);
+      return false;
+}
+
+function drawBasic() {
+    chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    options = {
+            title: 'Столбик -  число сделок в ценовом диапазоне',
+            hAxis: {
+              title: 'Диапазоны цен (BYN)',
+            },
+            vAxis: {
+              title: 'Количество сделок'
+            }
+          };
+    $("#refreshChart").click(refreshChart);
+    refreshChart();
+}
+</script>
+</body>
+</html>
