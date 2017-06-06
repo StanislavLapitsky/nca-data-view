@@ -7,6 +7,7 @@ import org.nca.data.utils.dateParse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.io.*
+import java.net.URLDecoder
 import java.util.*
 
 /**
@@ -31,17 +32,31 @@ class NcaDataServiceImpl : NcaDataService {
         return res;
     }
 
+    @Throws(Exception::class)
+    fun getJarContainingFolder(aclass: Class<*>): String {
+        val jarFile: File
+
+        val path = aclass.getResource(aclass.simpleName + ".class").path
+        var jarFilePath = path.substring(path.indexOf(":") + 1, path.indexOf("!"))
+        jarFilePath = URLDecoder.decode(jarFilePath, "UTF-8")
+        jarFile = File(jarFilePath)
+        return jarFile.parentFile.absolutePath
+    }
+
     override fun getMonthData(year: Int, month: Int): List<List<Any>> {
+        if (baseFilePath=="") {
+            baseFilePath = getJarContainingFolder(NcaDataServiceImpl::class.java)
+            println("baseFilePath=" + baseFilePath)
+        }
         val root = File(baseFilePath)
         val prefix = NCA_FILE_PREFIX + year + "." + if (month<=9) "0" + month else month
-        for (f in root.listFiles()) {
-            if (f.name.startsWith(prefix)) {
-                return getAggregatedMonthData(readDataFile(f))
-            }
+        val f = root.listFiles().filter { it -> it.name.startsWith(prefix) }.firstOrNull()
+        if (f != null) {
+            return getAggregatedMonthData(readDataFile(f))
         }
-        val res = mutableListOf<List<Any>>()
-
-        return res
+        else {
+            return mutableListOf<List<Any>>()
+        }
     }
 
     private fun getAggregatedMonthData(source:List<NcaDataDTO>): List<List<Any>> {
