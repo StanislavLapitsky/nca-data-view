@@ -59,6 +59,15 @@ class NcaDataServiceImpl : NcaDataService {
         }
     }
 
+    override fun clearFile(fileName: String) {
+        if (baseFilePath=="") {
+            baseFilePath = getJarContainingFolder(NcaDataServiceImpl::class.java)
+            println("baseFilePath=" + baseFilePath)
+        }
+        val root = File(baseFilePath + "/" +fileName);
+        root.delete();
+    }
+
     private fun getAggregatedMonthData(source:List<NcaDataDTO>): List<List<Any>> {
         val res = mutableListOf<List<Any>>()
         var rangeStart = 0

@@ -51,4 +51,16 @@ class NcaDataController {
         println(list)
         return list
     }
+
+    @RequestMapping(
+            path = arrayOf("/clear-file"),
+            method = arrayOf(RequestMethod.GET, RequestMethod.POST),
+            produces = arrayOf(MediaType.APPLICATION_JSON_UTF8_VALUE))
+    fun clearFile(
+            @RequestParam(value = "clearFileName")
+            clearFileName: String): String {
+
+        ncaDataService.clearFile(clearFileName)
+        return "ok"
+    }
 }

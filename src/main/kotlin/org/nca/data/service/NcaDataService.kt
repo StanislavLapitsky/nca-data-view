@@ -10,4 +10,5 @@ import java.util.*
 interface NcaDataService {
     fun getDate(startDate:Date, endDate:Date): List<NcaDataDTO>
     fun getMonthData(year:Int, month:Int): List<List<Any>>
+    fun clearFile(fileName:String)
 }
