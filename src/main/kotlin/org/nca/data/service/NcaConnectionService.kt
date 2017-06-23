@@ -55,6 +55,7 @@ open class NCAConnectionService {
             while (startPrice < priceMax) {
                 try {
                     val dto = getNCASearchResult(startDate, endDate, startPrice, endPrice-1, sessionId!!)
+                    println("startPrice=$startPrice endPrice=$endPrice dto=$dto")
                     if (dto.count >0) {
                         res.add(dto)
                     }

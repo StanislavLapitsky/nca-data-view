@@ -32,6 +32,7 @@ class NcaDataController {
             @DateTimeFormat(pattern="yyyy.MM.dd")
             endDate: Date): List<NcaDataDTO> {
 
+        println("startDate=$startDate endDate=$endDate")
         val list = ncaDataService.getDate(startDate, endDate)
         println(list)
         return list
@@ -60,6 +61,7 @@ class NcaDataController {
             @RequestParam(value = "clearFileName")
             clearFileName: String): String {
 
+        println("clearFileName=$clearFileName")
         ncaDataService.clearFile(clearFileName)
         return "ok"
     }

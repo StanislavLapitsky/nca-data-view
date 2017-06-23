@@ -24,6 +24,7 @@ class NcaDataServiceImpl : NcaDataService {
     override fun getDate(startDate: Date, endDate: Date): List<NcaDataDTO> {
 //        val res:List<NcaDataDTO> = mutableListOf()
         val dataFileName = getNcaDataFileName(startDate, endDate)
+        println("dataFileName = " + dataFileName)
         if (!File(dataFileName).exists()) {
             fillFile(startDate, endDate)
         }
