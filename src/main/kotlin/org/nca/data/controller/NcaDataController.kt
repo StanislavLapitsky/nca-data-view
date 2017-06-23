@@ -48,6 +48,7 @@ class NcaDataController {
             @RequestParam(value = "month")
             month: Int): List<List<Any>> {
 
+        println("year=$year month=$month")
         val list = ncaDataService.getMonthData(year, month)
         println(list)
         return list

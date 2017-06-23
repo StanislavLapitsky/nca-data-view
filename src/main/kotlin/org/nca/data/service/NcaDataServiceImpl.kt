@@ -38,9 +38,16 @@ class NcaDataServiceImpl : NcaDataService {
         val jarFile: File
 
         val path = aclass.getResource(aclass.simpleName + ".class").path
-        var jarFilePath = path.substring(path.indexOf(":") + 1, path.indexOf("!"))
-        jarFilePath = URLDecoder.decode(jarFilePath, "UTF-8")
-        jarFile = File(jarFilePath)
+        if (path.indexOf("!")>=0) {
+            var jarFilePath = path.substring(path.indexOf(":") + 1, path.indexOf("!"))
+            jarFilePath = URLDecoder.decode(jarFilePath, "UTF-8")
+            jarFile = File(jarFilePath)
+        }
+        else {
+            var jarFilePath = path.substring(path.indexOf(":") + 1, path.indexOf("classes"))
+            jarFilePath = URLDecoder.decode(jarFilePath, "UTF-8")
+            jarFile = File(jarFilePath)
+        }
         return jarFile.parentFile.absolutePath
     }
 
